@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneManager : MonoBehaviour
 {
+    public GameObject UI1;
+    public GameObject UI2;
     private void Start()
     {
-        DontDestroyOnLoad(this);
+        if (UI1 == null || UI2 == null) return;
+        else UI2.SetActive(false);
     }
     public void ChangeScene(int sceneNum)
     {
@@ -32,5 +35,17 @@ public class SceneManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void ChangeUI1()
+    {
+        UI1.SetActive(true);
+        UI2.SetActive(false);
+    }
+
+    public void ChangeUI2()
+    {
+        UI1.SetActive(false);
+        UI2.SetActive(true);
     }
 }
