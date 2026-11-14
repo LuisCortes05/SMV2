@@ -3,30 +3,51 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
-    public float speed = 50f;
+    public float speed = 5f;
     public float jumpForce = 10f;
+    public float gravity = 25f;
 
-    [SerializeField] PlayerInput playerInput;
-    private Vector2 entry;
+    [SerializeField] private PlayerInput playerInput;
 
-    //[SerializeField] private Animator anim;
+    private float verticalVelocity;
+    private float groundHeight;
+    private bool isGrounded = true;
+
+    private void Start()
+    {
+        groundHeight = transform.position.y;
+    }
 
     private void Update()
     {
-        entry = playerInput.actions["Move"].ReadValue<Vector2>();
-    }
+        Vector2 entry = playerInput.actions["Move"].ReadValue<Vector2>();
 
-    private void FixedUpdate()
-    {
-        rb.AddForce(new Vector3(entry.x, 0f, entry.y) * speed);
+        if (!isGrounded)
+        {
+            verticalVelocity -= gravity * Time.deltaTime;
+        }
+
+        Vector3 position = transform.position;
+
+        position.x += entry.x * speed * Time.deltaTime;
+        position.y += verticalVelocity * Time.deltaTime;
+
+        if (position.y <= groundHeight && verticalVelocity <= 0f)
+        {
+            position.y = groundHeight;
+            verticalVelocity = 0f;
+            isGrounded = true;
+        }
+
+        transform.position = position;
     }
 
     public void Jump(InputAction.CallbackContext callbackContext)
     {
-        if(callbackContext.performed)
+        if (callbackContext.performed && isGrounded)
         {
-            rb.AddForce(Vector3.up * jumpForce);
+            verticalVelocity = jumpForce;
+            isGrounded = false;
         }
     }
 }
