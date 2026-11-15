@@ -11,10 +11,7 @@ public class Personaje : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
         ani = GetComponent<Animator>();
-        
-
     }
 
     public void Start_Combo()
@@ -38,7 +35,6 @@ public class Personaje : MonoBehaviour
         {
             atacando = true;
             ani.SetTrigger(""+combo);
-
         }
     }
 

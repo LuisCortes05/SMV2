@@ -4,23 +4,23 @@ public class PlayerHealth : MonoBehaviour
 {
     public int playerID = 1;
     public float maxHealth = 100f;
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
 
     public GameManager gm;
+    public float CurrentHealth => currentHealth;
 
     private void Start()
     {
-        currentHealth = maxHealth;
-
-        gm.UpdateHealtBar(playerID, currentHealth, maxHealth);
+        ResetHealth();
     }
 
     public void TakeDamage(float amount)
     {
+        if(currentHealth <= 0) return;
         currentHealth -= amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
-        gm.UpdateHealtBar(playerID, currentHealth, maxHealth);
+        gm.UpdateHealthBar(playerID, currentHealth, maxHealth);
 
         if (currentHealth <= 0)
         {
@@ -32,6 +32,9 @@ public class PlayerHealth : MonoBehaviour
     public void ResetHealth()
     {
         currentHealth = maxHealth;
-        gm.UpdateHealtBar(playerID, currentHealth, maxHealth);
+        if(gm != null)
+        {
+            gm.UpdateHealthBar(playerID, currentHealth, maxHealth);
+        }
     }
 }
