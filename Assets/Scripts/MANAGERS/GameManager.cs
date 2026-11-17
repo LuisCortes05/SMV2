@@ -59,17 +59,28 @@ public class GameManager : MonoBehaviour
         {
             DamagePlayer2ForTest();
         }
+        if (Keyboard.current != null && Keyboard.current.lKey.wasPressedThisFrame)
+        {
+            DamagePlayer1ForTest();
+        }
     }
 #endif
 
     /// <summary>
-    /// Resta vida al Player 2. Se puede asignar al OnClick() de un Button en el Canvas.
+    /// Resta vida para prueba, borrar esto despues
     /// </summary>
     public void DamagePlayer2ForTest()
     {
         if (!roundActive || player2Health == null) return;
 
         player2Health.TakeDamage(testDamageAmount);
+    }
+
+    public void DamagePlayer1ForTest()
+    {
+        if (!roundActive || player1Health == null) return;
+
+        player1Health.TakeDamage(testDamageAmount);
     }
 
 
