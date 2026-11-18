@@ -459,7 +459,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &458584476
 Transform:
   m_ObjectHideFlags: 0
@@ -1847,6 +1847,7 @@ GameObject:
   - component: {fileID: 1367834096}
   - component: {fileID: 1367834097}
   - component: {fileID: 1367834098}
+  - component: {fileID: 1367834099}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1946,6 +1947,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1367834099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367834095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c034965acf3c81945a3a5b6d8ad7cc4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ani: {fileID: 0}
+  combo: 0
+  atacando: 0
 --- !u!1 &1397437286
 GameObject:
   m_ObjectHideFlags: 0

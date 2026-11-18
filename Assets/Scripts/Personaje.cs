@@ -31,7 +31,7 @@ public class Personaje : MonoBehaviour
 
     public void Combos_()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !atacando)
+        if (Input.GetKeyDown(KeyCode.A) && !atacando)
         {
             atacando = true;
             ani.SetTrigger(""+combo);
