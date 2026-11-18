@@ -5465,6 +5465,7 @@ GameObject:
   - component: {fileID: 2078864367}
   - component: {fileID: 2078864368}
   - component: {fileID: 2078864369}
+  - component: {fileID: 2078864370}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5529,6 +5530,20 @@ MonoBehaviour:
   KOEffectVFX: {fileID: 1449797756}
   effectDuration: 2.5
   moveToDefeatedPlayer: 1
+--- !u!114 &2078864370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078864366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b971f16bddec444877871b67f402aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player1: {fileID: 1924191150}
+  player2: {fileID: 1909290731}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
