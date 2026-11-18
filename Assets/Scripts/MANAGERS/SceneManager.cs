@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class SceneManager : MonoBehaviour
 {
+    private MenuFocusHelper helper;
     public GameObject UI1;
     public GameObject UI2;
     private void Start()
@@ -47,5 +48,6 @@ public class SceneManager : MonoBehaviour
     {
         UI1.SetActive(false);
         UI2.SetActive(true);
+        helper.FocusNewPanel();
     }
 }

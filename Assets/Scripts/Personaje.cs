@@ -43,4 +43,9 @@ public class Personaje : MonoBehaviour
     {
         Combos_();
     }
+
+    public void makeDamage()
+    {
+
+    }
 }
