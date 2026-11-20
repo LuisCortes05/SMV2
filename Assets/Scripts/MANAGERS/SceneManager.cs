@@ -8,10 +8,14 @@ public class SceneManager : MonoBehaviour
     private MenuFocusHelper helper;
     public GameObject UI1;
     public GameObject UI2;
+    public GameObject pauseCanvas;
     private void Start()
     {
         if (UI1 == null || UI2 == null) return;
         else UI2.SetActive(false);
+
+        if (pauseCanvas == null) return;
+        else pauseCanvas.SetActive(false);
     }
     public void ChangeScene(int sceneNum)
     {
@@ -26,11 +30,13 @@ public class SceneManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0f;
+        pauseCanvas.SetActive(true);
     }
 
     public void Resume()
     {
         Time.timeScale = 1f;
+        pauseCanvas.SetActive(false);
     }
 
     public void ExitGame()
