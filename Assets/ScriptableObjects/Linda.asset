@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Linda
   m_EditorClassIdentifier: 
   characterName: Linda
-  portrait: {fileID: 0}
-  previewPrefab: {fileID: 0}
-  battlePrefab: {fileID: 0}
+  portrait: {fileID: 8667695901565726676, guid: 9aebe9c281a12b14f8ed19a40950e560, type: 3}
+  previewPrefab: {fileID: 4954728798508072987, guid: c547d2cffd5859c46be409be0809a18f, type: 3}
+  battlePrefab: {fileID: 6939711496257738627, guid: 7d3307d0b5472ba44b1eed95b5e8ec44, type: 3}
   isUnlocked: 1

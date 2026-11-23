@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BBot
   m_EditorClassIdentifier: 
   characterName: BBot
-  portrait: {fileID: 0}
-  previewPrefab: {fileID: 0}
-  battlePrefab: {fileID: 0}
+  portrait: {fileID: -3202250252999122395, guid: 9aebe9c281a12b14f8ed19a40950e560, type: 3}
+  previewPrefab: {fileID: 2902031622606422857, guid: 03a43933fe8a81e45bca3c2aca4b6375, type: 3}
+  battlePrefab: {fileID: 2791940221404235767, guid: 1d2dc25a512430e40aebfac413c04377, type: 3}
   isUnlocked: 1
