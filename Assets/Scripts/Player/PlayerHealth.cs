@@ -16,7 +16,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        if(currentHealth <= 0) return;
+        if (currentHealth <= 0) return;
+
+        // Cancela cualquier ataque o carga en curso al recibir daño
+        GetComponent<GolpeCargado>()?.CancelarAtaque();
+        GetComponent<Personaje>()?.CancelarCombo();
+
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
