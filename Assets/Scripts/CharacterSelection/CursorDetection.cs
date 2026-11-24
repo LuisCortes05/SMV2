@@ -1,44 +1,62 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.TextCore.Text;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(PlayerInput))]
 public class CursorDetection : MonoBehaviour
 {
+    [Header("Player Settings")]
+    [Tooltip("0 para Player 1, 1 para Player 2")]
+    public int playerIndex = 0;
+
     private GraphicRaycaster gr;
     private Canvas parentCanvas;
     private PointerEventData pointerEventData = new PointerEventData(null);
 
+    private PlayerInput playerInput;
+    private InputAction submitAction;
+    private InputAction cancelAction;
+
     public Transform currentCharacter;
     public Transform token;
-    public bool hasToken;
+    public bool hasToken = true;
 
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        submitAction = playerInput.actions["Submit"];
+        cancelAction = playerInput.actions["Cancel"];
+    }
     void Start()
     {
         gr = GetComponentInParent<GraphicRaycaster>();
         parentCanvas = gr.GetComponent<Canvas>();
-        CharacterSelectionManager.instance.ShowCharacterInSlot(0, null);
+        CharacterSelectionManager.instance.ShowCharacterInSlot(playerIndex, null);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (submitAction.WasPressedThisFrame())
         {
-            if (currentCharacter != null)
+            if (hasToken && currentCharacter != null)
             {
                 TokenFollow(false);
-                CharacterSelectionManager.instance.ConfirmCharacter(0, CharacterSelectionManager.instance.characters[currentCharacter.GetSiblingIndex()]);
+                Characters chosen = CharacterSelectionManager.instance.characters[currentCharacter.GetSiblingIndex()];
+                CharacterSelectionManager.instance.ConfirmCharacter(playerIndex, chosen);
             }
         }
 
         // CANCEL
-        if (Input.GetKeyDown(KeyCode.X))
+        if (cancelAction.WasPressedThisFrame())
         {
-            CharacterSelectionManager.instance.confirmedCharacter = null;
-            TokenFollow(true);
+            if (!hasToken)
+            {
+                CharacterSelectionManager.instance.CancelCharacter(playerIndex);
+                TokenFollow(true);
+            }
         }
 
         if (hasToken)
@@ -63,7 +81,6 @@ public class CursorDetection : MonoBehaviour
         {
             Transform raycastCharacter = null;
 
-            // Recorre todos los elementos bajo el cursor hasta encontrar una celda válida
             foreach (RaycastResult result in results)
             {
                 if (result.gameObject.transform.Find("selectedBorder") != null)
@@ -77,23 +94,25 @@ public class CursorDetection : MonoBehaviour
             {
                 if (raycastCharacter != currentCharacter)
                 {
-                    if (currentCharacter != null)
-                    {
-                        currentCharacter.Find("selectedBorder").GetComponent<Image>().DOKill();
-                        currentCharacter.Find("selectedBorder").GetComponent<Image>().color = Color.clear;
-                    }
+                    ClearCurrentBorder();
                     SetCurrentCharacter(raycastCharacter);
                 }
             }
-            else
+            else if (currentCharacter != null)
             {
-                if (currentCharacter != null)
-                {
-                    currentCharacter.Find("selectedBorder").GetComponent<Image>().DOKill();
-                    currentCharacter.Find("selectedBorder").GetComponent<Image>().color = Color.clear;
-                    SetCurrentCharacter(null);
-                }
+                ClearCurrentBorder();
+                SetCurrentCharacter(null);
             }
+        }
+    }
+
+    private void ClearCurrentBorder()
+    {
+        if (currentCharacter != null)
+        {
+            Image border = currentCharacter.Find("selectedBorder").GetComponent<Image>();
+            border.DOKill();
+            border.color = Color.clear;
         }
     }
 

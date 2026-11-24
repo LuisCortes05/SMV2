@@ -68,6 +68,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "attack2",
+                    "type": "Button",
+                    "id": "d9f568b8-9fc2-4002-b97b-2d40067a7cae",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "attack3",
+                    "type": "Button",
+                    "id": "d1e2e453-4204-4f65-96a4-0db10bf99e10",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -210,7 +228,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";GamePad",
-                    "action": "atack",
+                    "action": "attack2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7fde122-cf6c-4d83-bd82-86cfc2b933cc",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -221,7 +250,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";GamePad",
-                    "action": "atack",
+                    "action": "attack3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a466876-f743-4f6f-bccd-25054f1ffa36",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "attack3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

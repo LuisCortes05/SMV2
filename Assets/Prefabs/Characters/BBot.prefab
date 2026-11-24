@@ -239,30 +239,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5072838596965259158}
         m_TargetAssemblyTypeName: GolpeCargado, Assembly-CSharp
-        m_MethodName: OnGolpe1
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5072838596965259158}
-        m_TargetAssemblyTypeName: GolpeCargado, Assembly-CSharp
-        m_MethodName: OnGolpe2
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5072838596965259158}
-        m_TargetAssemblyTypeName: GolpeCargado, Assembly-CSharp
         m_MethodName: OnGolpe3
         m_Mode: 0
         m_Arguments:
@@ -275,6 +251,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 3597be13-a71a-4041-ac06-85e92aa978e4
     m_ActionName: Player/atack
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5072838596965259158}
+        m_TargetAssemblyTypeName: GolpeCargado, Assembly-CSharp
+        m_MethodName: OnGolpe2
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d9f568b8-9fc2-4002-b97b-2d40067a7cae
+    m_ActionName: Player/attack2
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5072838596965259158}
+        m_TargetAssemblyTypeName: GolpeCargado, Assembly-CSharp
+        m_MethodName: OnGolpe3
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d1e2e453-4204-4f65-96a4-0db10bf99e10
+    m_ActionName: Player/attack3
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

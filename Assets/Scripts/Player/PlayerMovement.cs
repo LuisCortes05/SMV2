@@ -12,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity;
     private float groundHeight;
     private bool isGrounded = true;
+    private void Awake()
+    {
+        if (playerInput == null)
+            playerInput = GetComponent<PlayerInput>();
+    }
 
     private void Start()
     {
@@ -49,5 +54,11 @@ public class PlayerMovement : MonoBehaviour
             verticalVelocity = jumpForce;
             isGrounded = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (playerInput != null && playerInput.actions["Jump"] != null)
+            playerInput.actions["Jump"].performed -= Jump;
     }
 }

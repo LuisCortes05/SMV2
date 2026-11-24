@@ -54,9 +54,10 @@ public class GolpeCargado : MonoBehaviour
 
     private void ProcesarInputGolpe(InputAction.CallbackContext context, string triggerGolpe)
     {
-        // Equivale a Input.GetKeyDown (instante en que se presiona el botón)
         if (context.started)
         {
+            Debug.Log($"[INPUT] Botón presionado: {context.action.name} -> Intentando lanzar: {triggerGolpe}");
+            if (manteniendoBoton) return;
             IniciarGolpe(triggerGolpe);
         }
         // Equivale a Input.GetKeyUp (instante en que se suelta el botón)
@@ -143,4 +144,6 @@ public class GolpeCargado : MonoBehaviour
             hb.gameObject.SetActive(false);
         }
     }
+
+
 }

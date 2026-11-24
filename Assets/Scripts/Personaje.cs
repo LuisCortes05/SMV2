@@ -14,7 +14,17 @@ public class Personaje : MonoBehaviour
     [Header("Hitboxes y Daño por Golpe (0 = Golpe 1, 1 = Golpe 2, 2 = Golpe 3)")]
     public GameObject[] hitboxesGolpes;
     public float[] danosPorGolpe = new float[] { 15f, 20f, 30f };
+    private PlayerInput playerInput;
 
+    private void Awake()
+    {
+        ani = GetComponent<Animator>();
+        playerInput = GetComponent<PlayerInput>();
+    }
+    public void SetRivalHealth(PlayerHealth rival)
+    {
+        playerHealth = rival; // O rivalHealth, según el nombre de tu variable de daño al oponente[cite: 11, 16]
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -78,7 +88,7 @@ public class Personaje : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Combos_();
+        //Combos_();
     }
 
     public void DesactivarTodasLasHitboxes()
@@ -107,4 +117,9 @@ public class Personaje : MonoBehaviour
         Finish_Ani();
     }
 
+    private void OnDestroy()
+    {
+        if (playerInput != null && playerInput.actions["Attack"] != null)
+            playerInput.actions["Attack"].performed -= OnAttack;
+    }
 }

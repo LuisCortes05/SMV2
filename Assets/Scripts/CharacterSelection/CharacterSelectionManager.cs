@@ -1,32 +1,39 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using DG.Tweening;
 
 public class CharacterSelectionManager : MonoBehaviour
 {
     private GridLayoutGroup gridLayout;
-    [HideInInspector]
-    public Vector2 slotArtworkSize;
+    [HideInInspector] public Vector2 slotArtworkSize;
     private float slotArtworkDefaultX;
 
     public static CharacterSelectionManager instance;
 
     [Header("Character List")]
-    public List<Characters > characters = new List<Characters>();
+    public List<Characters> characters = new List<Characters>();
 
-    [Space]
     [Header("Public References")]
     public GameObject charCellPrefab;
-    //public GameObject gridBgPrefab;
     public Transform playerSlotsContainer;
 
-    [Space]
-    [Header("Current Confirmed Character")]
-    public Characters confirmedCharacter;
+    [Header("Player Cursors (New Input System)")]
+    [SerializeField] private PlayerInput cursorP1Input;
+    [SerializeField] private PlayerInput cursorP2Input;
+
+    [Header("Confirmed Characters")]
+    public Characters[] confirmedCharacters = new Characters[2];
+
+    [Header("Countdown & Scene Transition")]
+    [SerializeField] private GameObject countdownPanel;
+    [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private float countdownSeconds = 3f;
+    [SerializeField] private string arenaSceneName = "Arena";
+    private Coroutine countdownCoroutine;
 
     private void Awake()
     {
@@ -35,18 +42,19 @@ public class CharacterSelectionManager : MonoBehaviour
         Transform defaultArtwork = playerSlotsContainer.GetChild(0).Find("artWork");
         slotArtworkSize = defaultArtwork.GetComponent<RectTransform>().sizeDelta;
         slotArtworkDefaultX = defaultArtwork.localPosition.x;
+
+        if (countdownPanel != null)
+            countdownPanel.SetActive(false);
     }
     private void Start()
     {
-        gridLayout = GetComponent<GridLayoutGroup>();
-        GetComponent<RectTransform>().sizeDelta = new Vector2(gridLayout.cellSize.x * 5, 
-            gridLayout.cellSize.y * 2);
-        //RectTransform gridBG = Instantiate(gridBgPrefab, transform.parent).GetComponent<RectTransform>();
-        //gridBG.transform.SetSiblingIndex(transform.GetSiblingIndex());
-        //gridBG.sizeDelta = GetComponent<RectTransform>().sizeDelta;
+        AssignControllersToCursors();
 
-        slotArtworkSize = playerSlotsContainer.GetChild(0).Find("artWork").GetComponent<RectTransform>().sizeDelta;
-        slotArtworkDefaultX = playerSlotsContainer.GetChild(0).Find("artWork").localPosition.x;
+        gridLayout = GetComponent<GridLayoutGroup>();
+        GetComponent<RectTransform>().sizeDelta = new Vector2(
+            gridLayout.cellSize.x * 5,
+            gridLayout.cellSize.y * 2
+        );
 
         foreach (Characters character in characters)
         {
@@ -54,10 +62,22 @@ public class CharacterSelectionManager : MonoBehaviour
         }
     }
 
+    private void AssignControllersToCursors()
+    {
+        if (cursorP1Input != null && Gamepad.all.Count >= 1)
+        {
+            cursorP1Input.SwitchCurrentControlScheme("Gamepad", Gamepad.all[0]);
+        }
+
+        if (cursorP2Input != null && Gamepad.all.Count >= 2)
+        {
+            cursorP2Input.SwitchCurrentControlScheme("Gamepad", Gamepad.all[1]);
+        }
+    }
+
     private void SpawnCharacterCell(Characters character)
     {
         GameObject charCell = Instantiate(charCellPrefab, transform);
-
         charCell.name = character.characterName;
 
         Image artWork = charCell.transform.Find("artWork").GetComponent<Image>();
@@ -65,10 +85,6 @@ public class CharacterSelectionManager : MonoBehaviour
 
         artWork.sprite = character.characterImage;
         name.text = character.characterName;
-
-        //Vector2 pixelSize = new Vector2(artWork.sprite.texture.width, artWork.sprite.texture.height);
-        //Vector2 pixelPivot = artWork.sprite.pivot;
-        //Vector2 uiPivot = new Vector2(pixelPivot.x / pixelSize.x, pixelPivot.y / pixelSize.y);
 
         artWork.GetComponent<RectTransform>().pivot = uiPivot(artWork.sprite);
         artWork.GetComponent<RectTransform>().sizeDelta *= character.zoom;
@@ -80,12 +96,11 @@ public class CharacterSelectionManager : MonoBehaviour
 
         Color alpha = nullChar ? Color.clear : Color.white;
         Sprite artwork = nullChar ? null : character.characterImage;
-        string name = nullChar ? string.Empty : character.characterName;
+        string charName = nullChar ? string.Empty : character.characterName;
         string playernickname = "Player " + (player + 1).ToString();
         string playernumber = "P" + (player + 1).ToString();
 
         Transform slot = playerSlotsContainer.GetChild(player);
-
         Transform slotArtwork = slot.Find("artWork");
         Transform slotIcon = slot.Find("icon");
 
@@ -110,18 +125,82 @@ public class CharacterSelectionManager : MonoBehaviour
         s.Append(slotArtwork.DOLocalMoveX(slotArtworkDefaultX + 300f, 0));
         s.Append(slotArtwork.DOLocalMoveX(slotArtworkDefaultX, .05f).SetEase(Ease.OutCubic));
 
-        slot.Find("name").GetComponent<TextMeshProUGUI>().text = name;
+        if (slotIcon != null)
+        {
+            Image iconImg = slotIcon.GetComponent<Image>();
+            if (nullChar)
+            {
+                iconImg.DOFade(0, 0);
+            }
+            else
+            {
+                iconImg.sprite = character.characterIcon;
+                iconImg.DOFade(.3f, 0);
+            }
+        }
+
+        slot.Find("name").GetComponent<TextMeshProUGUI>().text = charName;
         slot.Find("player").GetComponentInChildren<TextMeshProUGUI>().text = playernickname;
         slot.Find("iconAndPx").GetComponentInChildren<TextMeshProUGUI>().text = playernumber;
     }
 
     public void ConfirmCharacter(int player, Characters character)
     {
-        if (confirmedCharacter == null)
+        if (confirmedCharacters[player] == null)
         {
-            confirmedCharacter = character;
+            confirmedCharacters[player] = character;
             playerSlotsContainer.GetChild(player).DOPunchPosition(Vector3.down * 3, .3f, 10, 1);
+
+            // Si ambos jugadores ya eligieron, iniciar conteo hacia atrás
+            if (confirmedCharacters[0] != null && confirmedCharacters[1] != null)
+            {
+                if (countdownCoroutine != null) StopCoroutine(countdownCoroutine);
+                countdownCoroutine = StartCoroutine(CountdownToArena());
+            }
         }
+    }
+
+    public void CancelCharacter(int player)
+    {
+        confirmedCharacters[player] = null;
+
+        // Si cualquiera presiona B durante el conteo, se cancela el cambio de escena
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+            countdownCoroutine = null;
+        }
+
+        if (countdownPanel != null)
+            countdownPanel.SetActive(false);
+    }
+
+    private IEnumerator CountdownToArena()
+    {
+        // Guardar elecciones para la escena Arena
+        MatchData.selectedCharacters[0] = confirmedCharacters[0];
+        MatchData.selectedCharacters[1] = confirmedCharacters[1];
+
+        if (countdownPanel != null)
+            countdownPanel.SetActive(true);
+
+        float remaining = countdownSeconds;
+
+        while (remaining > 0f)
+        {
+            if (countdownText != null)
+                countdownText.text = Mathf.CeilToInt(remaining).ToString();
+
+            remaining -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (countdownText != null)
+            countdownText.text = "¡FIGHT!";
+
+        yield return new WaitForSeconds(0.5f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(arenaSceneName);
     }
 
     public Vector2 uiPivot(Sprite sprite)

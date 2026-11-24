@@ -1,11 +1,20 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
 public class CursorMove : MonoBehaviour
 {
     public float speed = 600f;
     [SerializeField] private RectTransform canvasRect;
 
+    private PlayerInput playerInput;
+    private InputAction moveAction;
     private Vector3[] canvasCorners = new Vector3[4];
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions["Move"];
+    }
 
     void Start()
     {
@@ -19,14 +28,13 @@ public class CursorMove : MonoBehaviour
 
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
+        Vector2 input = moveAction.ReadValue<Vector2>();
 
-        transform.position += new Vector3(x, y, 0) * Time.deltaTime * speed;
+        transform.position += new Vector3(input.x, input.y, 0f) * Time.deltaTime * speed;
 
         if (canvasRect != null)
         {
-            // [0] = esquina inferior izquierda, [2] = esquina superior derecha del Canvas
+            // [0] = esquina inferior izquierda, [2] = esquina superior derecha del Canvas[cite: 14]
             canvasRect.GetWorldCorners(canvasCorners);
 
             transform.position = new Vector3(

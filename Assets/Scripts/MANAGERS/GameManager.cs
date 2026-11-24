@@ -245,4 +245,12 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+
+    public void RegisterPlayers(PlayerHealth p1Health, PlayerHealth p2Health, Transform p1Transform, Transform p2Transform)
+    {
+        player1Health = p1Health;
+        player2Health = p2Health;
+        player1Transform = p1Transform;
+        player2Transform = p2Transform;
+    }
 }
