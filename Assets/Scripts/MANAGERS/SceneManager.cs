@@ -18,11 +18,13 @@ public class SceneManager : MonoBehaviour
     }
     public void ChangeScene(int sceneNum)
     {
+        Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneNum);
     }
 
     public void ResetRounds()
     {
+        Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Arena");
     }
 

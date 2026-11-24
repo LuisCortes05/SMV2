@@ -177,7 +177,6 @@ public class CharacterSelectionManager : MonoBehaviour
 
     private IEnumerator CountdownToArena()
     {
-        // Guardar elecciones para la escena Arena
         MatchData.selectedCharacters[0] = confirmedCharacters[0];
         MatchData.selectedCharacters[1] = confirmedCharacters[1];
 
@@ -200,7 +199,15 @@ public class CharacterSelectionManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        // Detiene todos los tweens de la UI antes de destruir los objetos de esta escena
+        DOTween.KillAll();
+
         UnityEngine.SceneManagement.SceneManager.LoadScene(arenaSceneName);
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.KillAll();
     }
 
     public Vector2 uiPivot(Sprite sprite)

@@ -16,3 +16,6 @@ MonoBehaviour:
   characterImage: {fileID: -3977428653301379886, guid: 7c694c8e0e51e2e4d8b675066e841479, type: 3}
   characterIcon: {fileID: 2854274169349035603, guid: b9a8cdaa4aba9e14ba0aaca0d521a3f8, type: 3}
   zoom: 1
+  characterPrefab: {fileID: 0}
+  roundVictoryBanner: {fileID: -8926361784824817825, guid: 6b475ccd5974ce84c925f7194215c12d, type: 3}
+  matchVictoryBanner: {fileID: -3977428653301379886, guid: 7c694c8e0e51e2e4d8b675066e841479, type: 3}

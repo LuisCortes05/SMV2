@@ -120,8 +120,11 @@ public class CursorDetection : MonoBehaviour
     {
         if (tf != null)
         {
-            tf.Find("selectedBorder").GetComponent<Image>().color = Color.white;
-            tf.Find("selectedBorder").GetComponent<Image>().DOColor(Color.red, .7f).SetLoops(-1);
+            Image border = tf.Find("selectedBorder").GetComponent<Image>();
+            border.color = Color.white;
+            border.DOColor(Color.red, .7f)
+                  .SetLoops(-1)
+                  .SetLink(border.gameObject); // Se destruye automáticamente junto con la imagen
         }
 
         currentCharacter = tf;
@@ -130,12 +133,17 @@ public class CursorDetection : MonoBehaviour
         {
             int index = tf.GetSiblingIndex();
             Characters character = CharacterSelectionManager.instance.characters[index];
-            CharacterSelectionManager.instance.ShowCharacterInSlot(0, character);
+            CharacterSelectionManager.instance.ShowCharacterInSlot(playerIndex, character);
         }
         else
         {
-            CharacterSelectionManager.instance.ShowCharacterInSlot(0, null);
+            CharacterSelectionManager.instance.ShowCharacterInSlot(playerIndex, null);
         }
+    }
+
+    private void OnDestroy()
+    {
+        ClearCurrentBorder();
     }
 
     void TokenFollow(bool trigger)

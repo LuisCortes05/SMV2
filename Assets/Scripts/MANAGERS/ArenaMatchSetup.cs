@@ -65,7 +65,7 @@ public class ArenaMatchSetup : MonoBehaviour
         if (p2Combat != null) p2Combat.SetRivalHealth(p1Health);
 
         // 4. Registrar jugadores en el GameManager antes de StartNewRound()[cite: 10]
-        gameManager.RegisterPlayers(p1Health, p2Health, p1Instance.transform, p2Instance.transform);
+        gameManager.RegisterPlayers(p1Health, p2Health, p1Instance.transform, p2Instance.transform, charP1, charP2);
 
         // 5. Asignar los mandos de Xbox a cada personaje instanciado[cite: 7]
         PlayerInput p1Input = p1Instance.GetComponent<PlayerInput>();

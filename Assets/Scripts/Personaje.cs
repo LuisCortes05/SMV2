@@ -9,37 +9,58 @@ public class Personaje : MonoBehaviour
     public Animator ani;
     public int combo;
     public bool atacando;
+
+    [Header("Configuración de Combo")]
+    [SerializeField] private int totalGolpesCombo = 3; // Índices válidos: 0, 1, 2
+    [SerializeField] private float maxTiempoPorGolpe = 1.2f; // Seguro anti-bloqueo
+    private float temporizadorAtaque = 0f;
+
     [SerializeField] private PlayerHealth playerHealth;
     private GameManager gm;
+
     [Header("Hitboxes y Daño por Golpe (0 = Golpe 1, 1 = Golpe 2, 2 = Golpe 3)")]
     public GameObject[] hitboxesGolpes;
     public float[] danosPorGolpe = new float[] { 15f, 20f, 30f };
-    private PlayerInput playerInput;
 
     private void Awake()
     {
         ani = GetComponent<Animator>();
-        playerInput = GetComponent<PlayerInput>();
-    }
-    public void SetRivalHealth(PlayerHealth rival)
-    {
-        playerHealth = rival; // O rivalHealth, según el nombre de tu variable de daño al oponente[cite: 11, 16]
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        ani = GetComponent<Animator>();
+        ReiniciarEstadoCombate();
+    }
+
+    private void Update()
+    {
+        // Seguro anti-bloqueo: si una transición del Animator se salta Finish_Ani(),
+        // libera el estado automáticamente al cumplirse el tiempo máximo del golpe.
+        if (atacando)
+        {
+            temporizadorAtaque += Time.deltaTime;
+            if (temporizadorAtaque >= maxTiempoPorGolpe)
+            {
+                Finish_Ani();
+            }
+        }
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        // context.performed equivale exactamente a Input.GetKeyDown
-        if (context.performed && !atacando)
+        if (!context.performed || atacando) return;
+
+        // Evita que combo exceda los golpes disponibles (0, 1, 2)
+        if (combo >= totalGolpesCombo)
         {
-            atacando = true;
-            ani.SetTrigger(combo.ToString());
+            combo = 0;
         }
+
+        atacando = true;
+        temporizadorAtaque = 0f;
+
+        LimpiarTriggersAnimator();
+        ani.SetTrigger(combo.ToString());
     }
 
     public void ActivarHitbox(int indiceGolpe)
@@ -48,23 +69,23 @@ public class Personaje : MonoBehaviour
 
         if (indiceGolpe >= 0 && indiceGolpe < hitboxesGolpes.Length && hitboxesGolpes[indiceGolpe] != null)
         {
-            // Obtenemos el script HitboxAtaque del objeto y le pasamos el daño correspondiente
             HitboxAtaque hitbox = hitboxesGolpes[indiceGolpe].GetComponent<HitboxAtaque>();
             if (hitbox != null && indiceGolpe < danosPorGolpe.Length)
             {
                 hitbox.danoActual = danosPorGolpe[indiceGolpe];
             }
 
-            // Encendemos el objeto después de asignar el daño
             hitboxesGolpes[indiceGolpe].SetActive(true);
         }
     }
 
     public void Start_Combo()
     {
-        atacando = false;
-        if (combo < 3)
+        // Solo habilita el siguiente golpe si aún no llegamos al último del combo
+        if (combo < totalGolpesCombo - 1)
         {
+            atacando = false;
+            temporizadorAtaque = 0f;
             combo++;
         }
     }
@@ -73,22 +94,19 @@ public class Personaje : MonoBehaviour
     {
         atacando = false;
         combo = 0;
+        temporizadorAtaque = 0f;
+        LimpiarTriggersAnimator();
         DesactivarTodasLasHitboxes();
     }
 
-    public void Combos_()
+    private void LimpiarTriggersAnimator()
     {
-        if (Input.GetKeyDown(KeyCode.A) && !atacando)
-        {
-            atacando = true;
-            ani.SetTrigger(""+combo);
-        }
-    }
+        if (ani == null) return;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Combos_();
+        for (int i = 0; i < totalGolpesCombo; i++)
+        {
+            ani.ResetTrigger(i.ToString());
+        }
     }
 
     public void DesactivarTodasLasHitboxes()
@@ -104,22 +122,29 @@ public class Personaje : MonoBehaviour
         }
     }
 
+    public void SetRivalHealth(PlayerHealth rival)
+    {
+        playerHealth = rival;
+    }
+
     public void makeDamage(float damageAmount)
     {
         if (playerHealth == null) return;
-
         playerHealth.TakeDamage(damageAmount);
     }
 
     public void CancelarCombo()
     {
-        DesactivarTodasLasHitboxes();
         Finish_Ani();
     }
 
-    private void OnDestroy()
+    public void ReiniciarEstadoCombate()
     {
-        if (playerInput != null && playerInput.actions["Attack"] != null)
-            playerInput.actions["Attack"].performed -= OnAttack;
+        Finish_Ani();
+        if (ani != null)
+        {
+            ani.Rebind();
+            ani.Update(0f);
+        }
     }
 }

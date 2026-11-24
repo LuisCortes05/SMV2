@@ -13,4 +13,11 @@ public class Characters : ScriptableObject
 
     [Header("CombatPrefab")]
     public GameObject characterPrefab;
+
+    [Header("Victory Banners")]
+    [Tooltip("Sprite que aparece al ganar un round")]
+    public Sprite roundVictoryBanner;
+
+    [Tooltip("Cartel principal que aparece al ganar la partida completa")]
+    public Sprite matchVictoryBanner;
 }
