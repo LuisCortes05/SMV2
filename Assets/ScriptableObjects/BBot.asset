@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd5fb416b72dd9145a8159db315b14eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 28647d69fa042ec40b8b3e60c6e64115, type: 3}
   m_Name: BBot
   m_EditorClassIdentifier: 
   characterName: BBot
-  portrait: {fileID: -3202250252999122395, guid: 9aebe9c281a12b14f8ed19a40950e560, type: 3}
-  previewPrefab: {fileID: 2902031622606422857, guid: 03a43933fe8a81e45bca3c2aca4b6375, type: 3}
-  battlePrefab: {fileID: 2791940221404235767, guid: 1d2dc25a512430e40aebfac413c04377, type: 3}
-  isUnlocked: 1
+  characterImage: {fileID: 765154081351103428, guid: 7c694c8e0e51e2e4d8b675066e841479, type: 3}
+  characterIcon: {fileID: -4222097947646094115, guid: b9a8cdaa4aba9e14ba0aaca0d521a3f8, type: 3}
+  zoom: 1
+  characterPrefab: {fileID: 2791940221404235767, guid: 1d2dc25a512430e40aebfac413c04377, type: 3}

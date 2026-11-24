@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd5fb416b72dd9145a8159db315b14eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 28647d69fa042ec40b8b3e60c6e64115, type: 3}
   m_Name: Linda
   m_EditorClassIdentifier: 
   characterName: Linda
-  portrait: {fileID: 8667695901565726676, guid: 9aebe9c281a12b14f8ed19a40950e560, type: 3}
-  previewPrefab: {fileID: 4954728798508072987, guid: c547d2cffd5859c46be409be0809a18f, type: 3}
-  battlePrefab: {fileID: 6939711496257738627, guid: 7d3307d0b5472ba44b1eed95b5e8ec44, type: 3}
-  isUnlocked: 1
+  characterImage: {fileID: -823361620510505896, guid: 7c694c8e0e51e2e4d8b675066e841479, type: 3}
+  characterIcon: {fileID: 7198061444569702790, guid: b9a8cdaa4aba9e14ba0aaca0d521a3f8, type: 3}
+  zoom: 1
+  characterPrefab: {fileID: 2791940221404235767, guid: b3e1ab002d9e876478e09218dc087ebb, type: 3}

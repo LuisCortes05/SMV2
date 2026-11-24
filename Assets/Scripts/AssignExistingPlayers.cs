@@ -13,5 +13,7 @@ public class AssignExistingPlayers : MonoBehaviour
 
         if (Gamepad.all.Count >= 2)
             player2.SwitchCurrentControlScheme("Gamepad", Gamepad.all[1]);
+
+        if (player2 == null) return;
     }
 }
