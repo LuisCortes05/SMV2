@@ -43,8 +43,12 @@ public class CursorDetection : MonoBehaviour
         {
             if (hasToken && currentCharacter != null)
             {
-                TokenFollow(false);
                 Characters chosen = CharacterSelectionManager.instance.characters[currentCharacter.GetSiblingIndex()];
+
+                // Si no es jugable, ignora el botón de selección
+                if (!chosen.isPlayable) return;
+
+                TokenFollow(false);
                 CharacterSelectionManager.instance.ConfirmCharacter(playerIndex, chosen);
             }
         }
@@ -118,21 +122,28 @@ public class CursorDetection : MonoBehaviour
 
     void SetCurrentCharacter(Transform tf)
     {
-        if (tf != null)
-        {
-            Image border = tf.Find("selectedBorder").GetComponent<Image>();
-            border.color = Color.white;
-            border.DOColor(Color.red, .7f)
-                  .SetLoops(-1)
-                  .SetLink(border.gameObject); // Se destruye automáticamente junto con la imagen
-        }
-
         currentCharacter = tf;
 
         if (tf != null)
         {
             int index = tf.GetSiblingIndex();
             Characters character = CharacterSelectionManager.instance.characters[index];
+
+            Image border = tf.Find("selectedBorder").GetComponent<Image>();
+            border.DOKill();
+
+            if (character.isPlayable)
+            {
+                border.color = Color.white;
+                border.DOColor(Color.red, .7f)
+                      .SetLoops(-1)
+                      .SetLink(border.gameObject);
+            }
+            else
+            {
+                border.color = Color.gray;
+            }
+
             CharacterSelectionManager.instance.ShowCharacterInSlot(playerIndex, character);
         }
         else

@@ -12,6 +12,10 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity;
     private float groundHeight;
     private bool isGrounded = true;
+
+    [Header("Opponent Tracking")]
+    [SerializeField] private Transform opponent;
+
     private void Awake()
     {
         if (playerInput == null)
@@ -21,6 +25,11 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         groundHeight = transform.position.y;
+
+        if (opponent == null)
+            FindOpponent();
+
+        FaceOpponent();
     }
 
     private void Update()
@@ -45,7 +54,41 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = position;
+
+        FaceOpponent();
     }
+
+    private void FindOpponent()
+    {
+        PlayerMovement[] players = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
+        foreach (PlayerMovement player in players)
+        {
+            if (player != this)
+            {
+                opponent = player.transform;
+                break;
+            }
+        }
+    }
+
+    public void SetOpponent(Transform rivalTransform)
+    {
+        opponent = rivalTransform;
+    }
+
+    private void FaceOpponent()
+    {
+        if (opponent == null) return;
+
+        float differenceX = opponent.position.x - transform.position.x;
+
+        // Evita cambios bruscos en el instante exacto en que ambos comparten la misma coordenada X al saltar
+        if (Mathf.Abs(differenceX) < 0.01f) return;
+
+        Vector3 scale = transform.localScale;
+        scale.x = (differenceX > 0f) ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }   
 
     public void Jump(InputAction.CallbackContext callbackContext)
     {

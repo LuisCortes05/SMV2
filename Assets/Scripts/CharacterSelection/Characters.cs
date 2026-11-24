@@ -11,6 +11,8 @@ public class Characters : ScriptableObject
     public Sprite characterIcon;
     public float zoom = 1;
 
+    public bool isPlayable = false;
+
     [Header("CombatPrefab")]
     public GameObject characterPrefab;
 

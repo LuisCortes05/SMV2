@@ -225,8 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c034965acf3c81945a3a5b6d8ad7cc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxObjeto: {fileID: 2791940221404235767, guid: 1d2dc25a512430e40aebfac413c04377, type: 3}
-  hitboxScript: {fileID: 0}
   ani: {fileID: 3610290053699668051}
   combo: 0
   atacando: 0
@@ -284,8 +282,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9a52f6832001e4fa8a2e53599da029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpForce: 10
+  speed: 8
+  jumpForce: 12.5
   gravity: 25
   playerInput: {fileID: 4445699155912644513}
 --- !u!114 &4445699155912644513

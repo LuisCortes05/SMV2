@@ -86,6 +86,9 @@ public class CharacterSelectionManager : MonoBehaviour
         artWork.sprite = character.characterImage;
         name.text = character.characterName;
 
+        // Oscurece el retrato en la cuadrícula si el personaje aún no es jugable
+        artWork.color = character.isPlayable ? Color.white : new Color(0.35f, 0.35f, 0.35f, 1f);
+
         artWork.GetComponent<RectTransform>().pivot = uiPivot(artWork.sprite);
         artWork.GetComponent<RectTransform>().sizeDelta *= character.zoom;
     }
@@ -146,6 +149,8 @@ public class CharacterSelectionManager : MonoBehaviour
 
     public void ConfirmCharacter(int player, Characters character)
     {
+        if (character == null || !character.isPlayable) return;
+
         if (confirmedCharacters[player] == null)
         {
             confirmedCharacters[player] = character;
