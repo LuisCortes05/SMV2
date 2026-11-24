@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 public class Personaje : MonoBehaviour
 {
     [Header("Hitbox del Combo")]
-    public GameObject hitboxObjeto;
-    public HitboxAtaque hitboxScript;
+    //public GameObject hitboxObjeto;
+    //public HitboxAtaque hitboxScript;
     public Animator ani;
     public int combo;
     public bool atacando;
@@ -34,8 +34,6 @@ public class Personaje : MonoBehaviour
 
     private void Update()
     {
-        // Seguro anti-bloqueo: si una transición del Animator se salta Finish_Ani(),
-        // libera el estado automáticamente al cumplirse el tiempo máximo del golpe.
         if (atacando)
         {
             temporizadorAtaque += Time.deltaTime;

@@ -225,11 +225,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c034965acf3c81945a3a5b6d8ad7cc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitboxObjeto: {fileID: 0}
+  hitboxObjeto: {fileID: 2791940221404235767, guid: 1d2dc25a512430e40aebfac413c04377, type: 3}
   hitboxScript: {fileID: 0}
   ani: {fileID: 3610290053699668051}
   combo: 0
   atacando: 0
+  totalGolpesCombo: 3
+  maxTiempoPorGolpe: 1.2
   playerHealth: {fileID: 0}
   hitboxesGolpes:
   - {fileID: 2530703940155788801}

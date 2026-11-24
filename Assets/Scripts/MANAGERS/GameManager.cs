@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 /// <summary> 
 /// Notas de bugs:
 /// Aun hay que corregir los rounds
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image matchBackgroundIconImage; // Fondo con characterIcon
     [SerializeField] private Image matchBannerImage;         // Cartel frontal de victoria
     [SerializeField] private TextMeshProUGUI winnerTXT;        // Respaldo si falta cartel
+    [SerializeField] private GameObject victoryReturnButton;
 
     [Header("UI Fallbacks (Blindaje opcional)")]
     [SerializeField] private Sprite defaultRoundBanner;
@@ -305,7 +307,12 @@ public class GameManager : MonoBehaviour
 
         Characters winnerChar = GetCharacterData(winnerID);
 
-        // 1. Fondo con el characterIcon del personaje ganador
+        if (victoryReturnButton != null && EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(victoryReturnButton);
+        }
+
         Sprite bgIconToUse = (winnerChar != null && winnerChar.characterImage != null)
             ? winnerChar.characterImage
             : defaultCharacterIcon;
@@ -324,7 +331,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 2. Cartel frontal de victoria de partida
         Sprite matchBannerToUse = (winnerChar != null && winnerChar.matchVictoryBanner != null)
             ? winnerChar.matchVictoryBanner
             : defaultMatchBanner;
@@ -344,7 +350,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 3. Texto de respaldo en caso de que no exista ningún cartel asignado
         if (winnerTXT != null)
         {
             winnerTXT.gameObject.SetActive(!hasMatchBanner);
