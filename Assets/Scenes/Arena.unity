@@ -1423,6 +1423,7 @@ MonoBehaviour:
   defaultCharacterP2: {fileID: 11400000, guid: b115a4ac40a46b745b4b73cdcc1414b6, type: 2}
   gameManager: {fileID: 2078864368}
   flipP2ScaleX: 1
+  mirrorMatchP2Tint: {r: 0.65, g: 0.8, b: 1, a: 1}
 --- !u!1 &722512165
 GameObject:
   m_ObjectHideFlags: 0
@@ -4380,7 +4381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeText: {fileID: 1197466570}
-  maxTime: 15
+  maxTime: 99
   roundsToWin: 2
   player1Health: {fileID: 0}
   player2Health: {fileID: 0}

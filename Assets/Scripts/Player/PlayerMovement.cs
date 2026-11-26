@@ -7,6 +7,9 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 10f;
     public float gravity = 25f;
 
+    [Header("Control de Estado")]
+    public bool canMove = true;
+
     [SerializeField] private PlayerInput playerInput;
 
     private float verticalVelocity;
@@ -34,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Vector2 entry = playerInput.actions["Move"].ReadValue<Vector2>();
+        Vector2 entry = canMove ? playerInput.actions["Move"].ReadValue<Vector2>() : Vector2.zero;
 
         if (!isGrounded)
         {
@@ -92,6 +95,13 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext callbackContext)
     {
+        if (!canMove) return;
+
+        if (callbackContext.performed && isGrounded)
+        {
+            verticalVelocity = jumpForce;
+            isGrounded = false;
+        }
         if (callbackContext.performed && isGrounded)
         {
             verticalVelocity = jumpForce;

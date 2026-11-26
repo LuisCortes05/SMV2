@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class GolpeCargado : MonoBehaviour
 {
     private Animator animator;
+    private PlayerMovement playerMovement;
     private bool manteniendoBoton = false;
     private bool esperandoSuelta = false;
 
@@ -19,6 +20,7 @@ public class GolpeCargado : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        playerMovement = GetComponent<PlayerMovement>();
     }
 
     void Update()
@@ -84,6 +86,10 @@ public class GolpeCargado : MonoBehaviour
         animator.speed = 1f;
         ApagarTodosLosHitboxes();
 
+        // Bloquea el movimiento y el salto al iniciar el ataque
+        if (playerMovement != null)
+            playerMovement.canMove = false;
+
         animator.SetTrigger(triggerGolpe);
     }
 
@@ -94,6 +100,10 @@ public class GolpeCargado : MonoBehaviour
         temporizadorCarga = 0f;
         animator.speed = 1f;
         ApagarTodosLosHitboxes();
+
+        // Restaura el movimiento si el ataque es cancelado (ej. al recibir daño)
+        if (playerMovement != null)
+            playerMovement.canMove = true;
     }
 
     public void PausarEnCarga()
@@ -143,6 +153,9 @@ public class GolpeCargado : MonoBehaviour
         {
             hb.gameObject.SetActive(false);
         }
+
+        if (playerMovement != null)
+            playerMovement.canMove = true;
     }
 
 

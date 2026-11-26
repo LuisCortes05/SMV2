@@ -7,7 +7,7 @@ public class ArenaMatchSetup : MonoBehaviour
     [SerializeField] private Transform spawnPointP1; // Colócalo a la izquierda de la arena
     [SerializeField] private Transform spawnPointP2; // Colócalo a la derecha de la arena
 
-    [Header("Fallback Prefabs (Por si pruebas Arena directamente)")]
+    [Header("Fallback Prefabs")]
     [SerializeField] private Characters defaultCharacterP1;
     [SerializeField] private Characters defaultCharacterP2;
 
@@ -17,6 +17,8 @@ public class ArenaMatchSetup : MonoBehaviour
     [Header("Orientation")]
     [Tooltip("Actívalo si tus personajes son 2D y deben voltear su escala X para mirar a la izquierda")]
     [SerializeField] private bool flipP2ScaleX = true;
+
+    [SerializeField] private Color mirrorMatchP2Tint = new Color(0.65f, 0.8f, 1f, 1f); //Recolor si agarran el mismo personaje
 
     private void Awake()
     {
@@ -34,6 +36,11 @@ public class ArenaMatchSetup : MonoBehaviour
 
         p1Instance.name = $"P1_{charP1.characterName}";
         p2Instance.name = $"P2_{charP2.characterName}";
+
+        if (charP1 == charP2)
+        {
+            ApplyMirrorRecolor(p2Instance, mirrorMatchP2Tint);
+        }
 
         // Orientar al Player 2 hacia la izquierda
         if (flipP2ScaleX)
@@ -76,5 +83,14 @@ public class ArenaMatchSetup : MonoBehaviour
 
         if (p2Input != null && Gamepad.all.Count >= 2)
             p2Input.SwitchCurrentControlScheme("Gamepad", Gamepad.all[1]);
+    }
+
+    private void ApplyMirrorRecolor(GameObject fighterInstance, Color tintColor)
+    {
+        SpriteRenderer[] renderers = fighterInstance.GetComponentsInChildren<SpriteRenderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].color = tintColor;
+        }
     }
 }
